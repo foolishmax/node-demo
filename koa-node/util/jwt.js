@@ -15,16 +15,20 @@ exports.verifyToken = function (required = true) {
     let token = ctx.headers.authorization;
     token = token ? token.split('Bearer ')[1] : null;
 
-    if (!token) {
-      ctx.throw(402, 'token无效');
-    }
+    if (token) {
+      try {
+        let user = await verify(token, SECRETKEY);
+        ctx.user = user;
+        await next();
+      } catch (error) {
+        ctx.throw(402, error);
+      }
+    } else {
+      if (required) {
+        ctx.throw(402, 'token无效');
+      }
 
-    try {
-      let user = await verify(token, SECRETKEY);
-      ctx.user = user;
-      next();
-    } catch (error) {
-      ctx.throw(402, error);
+      await next();
     }
   };
 };

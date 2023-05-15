@@ -1,6 +1,15 @@
 const { User } = require('../model');
 const { createToken } = require('../util/jwt');
 
+module.exports.getUserById = async (ctx, next) => {
+  const dbUser = await User.findById(ctx.request.params.id, [
+    'username',
+    'email',
+  ]);
+
+  ctx.body = dbUser;
+};
+
 module.exports.getUser = async (ctx, next) => {
   ctx.body = ctx.user;
 };

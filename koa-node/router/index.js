@@ -9,6 +9,7 @@ const {
 } = require('../middleware/userValidate');
 
 router.get('/user/getUser', verifyToken(), user.getUser);
+router.get('/user/getUser/:id', verifyToken(false), user.getUserById);
 router.post('/user/register', registerValidate, user.register);
 router.post('/user/login', loginValidate, user.login);
 
