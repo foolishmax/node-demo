@@ -5,8 +5,8 @@ const cors = require('@koa/cors');
 
 const app = new Koa();
 
-app.use(cors());
 app.use(koaBody());
+app.use(cors());
 app.use(router.routes());
 
 app.on('error', (err, ctx) => {
